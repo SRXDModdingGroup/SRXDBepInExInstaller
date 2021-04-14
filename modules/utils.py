@@ -31,6 +31,21 @@ class Utils:
     
     def deleteFile(self, filePath):
         os.remove(filePath)
-        print(f"Deleted: {filePath}")
+        return
+
+    # Makes everything easier to download and unzip
+    def downloadFileAndUnzip(self, url, outputDirPath):
+        # Get and Save File
+        downloadedFile = self.download(url)
+        fileObject, tempZipPath = self.saveResponseAsTempFile(downloadedFile)
+        print(f"Saved Temp Zip: {tempZipPath}")
+
+        # Unzip File to 
+        self.unzipTo(tempZipPath, f"{outputDirPath}")
+        print(f"Unzipped: {tempZipPath} => {outputDirPath}")
+
+        # Deletes temp zip
+        self.deleteFile(tempZipPath)
+        print(f"Deleted: {tempZipPath}")
         return
 

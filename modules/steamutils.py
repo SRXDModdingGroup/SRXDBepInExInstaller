@@ -7,10 +7,18 @@ import ast
 class SteamUtils:
     def __init__(self):
         self.platform = sys.platform
-        self.baseSteamPath = self.getSteamBasePath()
-        self.steamCommonPathArray = self.getAllSteamAppsPath()
-        self.gameDirectory = self.getGameDirectory()
-        self.bepinDirectory = os.path.join(self.gameDirectory, "Bepinex")
+
+        try:
+            self.baseSteamPath = self.getSteamBasePath()
+            self.steamCommonPathArray = self.getAllSteamAppsPath()
+
+            self.gameDirectory = self.getGameDirectory()
+            # self.gameDirectory = "./test"
+        except:
+            self.gameDirectory = self.inputPathIfEmpty()
+        
+        self.bepinDirectory = os.path.join(self.gameDirectory, "BepInEx")
+        self.unityLibsDirectory = os.path.join(self.bepinDirectory, "unity-libs")
 
     def getSteamBasePath(self):
         baseSteamAppsPath = None
@@ -59,11 +67,37 @@ class SteamUtils:
         for commonPath in self.steamCommonPathArray:
             onlyDirectories = [path.join(commonPath, f) for f in os.listdir(commonPath) if not path.isfile(path.join(commonPath, f))]
             allGameDirectories.extend(onlyDirectories)
-        for directory in allGameDirectories:
-            appIDFile = path.join(directory, "steam_appid.txt")
-            if (path.exists(appIDFile)):
-                appid = open(appIDFile).readline().replace("\n", "")
-                if (appid == "1058830"):
-                    gameDirectory = directory
+        for directory in allGameDirectories:            
+            # Easier Way:
+            execPath = path.join(directory, "SpinRhythm.exe")
+            if (path.exists(execPath)):
+                gameDirectory = directory
+
+            if (gameDirectory == None):
+                # Old Appid Way:
+                appIDFile = path.join(directory, "steam_appid.txt")
+                if (path.exists(appIDFile)):
+                    appid = open(appIDFile).readline().replace("\n", "")
+                    if (appid == "1058830"):
+                        gameDirectory = directory
         return gameDirectory
+
+    def inputPathIfEmpty(self):
+        inputPath = None
+
+        currentPathwithExec = path.join(".", "SpinRhythm.exe")
+        if (path.exists(currentPathwithExec)):
+            inputPath = currentPathwithExec
+
+        else:
+            pathIsValid = False
+            while (not pathIsValid):
+                inputPath = input('Game Directory Could not be Found! This is Usually Something Like: "{usualPath}". \nPlease Enter (or Drag and Drop) your Spin Rhythm Game Folder Here: '.format(usualPath = path.join('C:\\','Program Files (x86)', 'Steam', 'steamapps\\')))
+                if (not inputPath.__len__() == 0 and path.exists(inputPath)):
+                    pathIsValid = True
+                else:
+                    print("Input Path was Invalid. Please Try Again...")   
+
+        inputPath = path.abspath(inputPath)              
+        return inputPath
             
