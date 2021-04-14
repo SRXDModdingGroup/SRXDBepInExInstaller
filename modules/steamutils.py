@@ -10,13 +10,15 @@ class SteamUtils:
         self.baseSteamPath = self.getSteamBasePath()
         self.steamCommonPathArray = self.getAllSteamAppsPath()
         self.gameDirectory = self.getGameDirectory()
+        self.bepinDirectory = os.path.join(self.gameDirectory, "Bepinex")
 
     def getSteamBasePath(self):
         baseSteamAppsPath = None
         if (self.platform == "win32"):
-            baseSteamAppsPath = path.join("C:","Program Files (x86)", "Steam", "steamapps")
+            baseSteamAppsPath = path.join("C:\\","Program Files (x86)", "Steam", "steamapps")
         else:
             baseSteamAppsPath = path.join(path.expanduser("~"),".local", "share", "Steam", "steamapps")
+        
         if (not path.exists(baseSteamAppsPath)):
             baseSteamAppsPath = None
         return baseSteamAppsPath
@@ -27,7 +29,7 @@ class SteamUtils:
         basicSteamCommonPath = path.join(self.baseSteamPath, "common")
 
         vdfDirectory = path.join(self.baseSteamPath, "libraryfolders.vdf")
-
+        
         if (path.exists(basicSteamCommonPath)):
             arrayOfPaths.append(basicSteamCommonPath)
         vdfDictionary = self.vdfToDict(open(vdfDirectory))

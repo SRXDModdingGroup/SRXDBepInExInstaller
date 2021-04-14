@@ -1,5 +1,7 @@
 import zipfile
 import urllib.request
+import tempfile
+import os
 
 class Utils:
     def __init__(self):
@@ -13,4 +15,22 @@ class Utils:
     def download(self, url):
         request = urllib.request.Request(url, headers = self.requestHeaders)
         response = urllib.request.urlopen(request).read()
+        return response
+
+    def saveResponseAsTempFile(self, response):
+        new_file, filePath = tempfile.mkstemp()
+        os.write(new_file, response)
+        os.close(new_file)
+        return new_file, filePath
+
+    def unzipTo(self, inputFilePath, outputPath):
+        
+        with zipfile.ZipFile(inputFilePath, 'r') as zip_ref:
+            zip_ref.extractall(outputPath)
         return
+    
+    def deleteFile(self, filePath):
+        os.remove(filePath)
+        print(f"Deleted: {filePath}")
+        return
+
