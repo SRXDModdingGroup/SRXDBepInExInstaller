@@ -1,6 +1,6 @@
 from modules.steamutils import SteamUtils
 from modules.bepinex import BepInExUtils
-from modules.gui import GuiUtils
+# from modules.gui import GuiUtils
 from modules.utils import Utils
 from modules.unitylibs import UnityLibsUtils
 
