@@ -1,10 +1,17 @@
 import tkinter as tk
 
 class GuiUtils:
-    def run(self):
-        window = tk.Tk()
+    def __init__(self):
+        self.window = tk.Tk()
+
+    def run(self, urls):
+
+        variable = tk.StringVar()
+
         # to rename the title of the window
-        window.title("Installer")
+        self.window.title("Installer")
         # pack is used to show the object in the window
-        label = tk.Label(window, text = "Installer").pack()
-        window.mainloop()
+        option = tk.OptionMenu(self.window, variable, urls).pack()
+        label = tk.Label(self.window, text = "Installer").pack()
+        self.window.mainloop()
+        
