@@ -2,6 +2,8 @@ import zipfile
 import urllib.request
 import tempfile
 import os
+import shutil
+import pathlib
 
 class Utils:
     def __init__(self):
@@ -32,6 +34,9 @@ class Utils:
     def deleteFile(self, filePath):
         os.remove(filePath)
         return
+    def recursiveDeleteFolder(self, filePath):
+        shutil.rmtree(filePath)
+        return
 
     # Makes everything easier to download and unzip
     def downloadFileAndUnzip(self, url, outputDirPath):
@@ -47,5 +52,21 @@ class Utils:
         # Deletes temp zip
         self.deleteFile(tempZipPath)
         print(f"Deleted: {tempZipPath}")
+        return
+
+    def uninstall(self, gamePath):
+        deleteFiles = ["BepInEx", "mono", "changelog.txt", "doorstop_config.ini", "winhttp.dll"]
+        for file in deleteFiles:
+            pathOfFile = os.path.join(gamePath, file)
+            if (os.path.exists(pathOfFile)):
+                suffixOfFile = pathlib.Path(pathOfFile).suffix
+                try:
+                    if (suffixOfFile == ""):
+                        self.recursiveDeleteFolder(pathOfFile)
+                    else:
+                        self.deleteFile(pathOfFile)
+                    print(f"Deleted: {pathOfFile}")
+                except:
+                    print(f"Error with deleting: {pathOfFile}")
         return
 
