@@ -13,7 +13,7 @@ class SteamUtils:
             self.steamCommonPathArray = self.getAllSteamAppsPath()
 
             self.gameDirectory = self.getGameDirectory()
-            self.gameDirectory = "./test"
+            # self.gameDirectory = "./test"
         except:
             self.gameDirectory = self.inputPathIfEmpty()
         
