@@ -21,6 +21,7 @@ for index, arg in enumerate(argsutils.getArgs()):
 # Init Steam Module
 print("Getting Steam Info...")
 steamutils = SteamUtils()
+print(f"Found Game Path: {steamutils.gameDirectory}")
 
 if (uninstall):
     utils.uninstall(steamutils.gameDirectory)
