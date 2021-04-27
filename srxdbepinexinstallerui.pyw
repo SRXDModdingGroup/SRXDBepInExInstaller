@@ -88,5 +88,5 @@ class GUIWindow:
 window=Tk()
 mywin=GUIWindow(window)
 window.title('SRXDBepInEXInstaller')
-window.geometry("400x300+10+10")
+window.geometry("500x300")
 window.mainloop()
