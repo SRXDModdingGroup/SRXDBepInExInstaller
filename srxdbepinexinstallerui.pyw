@@ -1,4 +1,5 @@
-from tkinter import * 
+from tkinter import *
+import tkinter 
 from tkinter.filedialog import askdirectory
 from tkinter import ttk
 
@@ -6,7 +7,7 @@ import threading
 import sys
 from os import path
 
-from modules.gui import PrintLogger
+from modules.gui import GuiUtils, PrintLogger
 from modules.steamutils import SteamUtils
 from modules.bepinex import BepInExUtils
 from modules.installer import Installer
@@ -22,10 +23,11 @@ class GUIWindow:
         self.consoleOutputText.grid(row=0, column=0, columnspan=4, sticky=NSEW,)
         pl = PrintLogger(self.consoleOutputText)
         sys.stdout = pl
+        print(GuiUtils().asciiArt)
 
         # Init Modules and VersionVar
         self.steamutils = SteamUtils()
-        print(f"Found Game Path: {self.steamutils.gameDirectory}")
+        print(f"Found Game Path: {self.steamutils.gameDirectory}",)
 
         self.bepinutils = BepInExUtils()
         self.selectedVersion = StringVar()
@@ -87,6 +89,6 @@ class GUIWindow:
         
 window=Tk()
 mywin=GUIWindow(window)
-window.title('SRXDBepInEXInstaller')
-window.geometry("500x300")
+window.title('SRXDBepInExInstaller')
+window.geometry("520x405")
 window.mainloop()
