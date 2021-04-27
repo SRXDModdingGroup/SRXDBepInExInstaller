@@ -23,7 +23,7 @@ class GuiUtils:
         return
 
 class PrintLogger(): # create file like object
-    def __init__(self, textbox): # pass reference to text widget
+    def __init__(self, textbox : Text): # pass reference to text widget
         self.textbox = textbox # keep ref
         self.textbox
 
