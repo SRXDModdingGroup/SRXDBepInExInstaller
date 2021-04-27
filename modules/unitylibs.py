@@ -1,5 +1,4 @@
 from html.parser import HTMLParser
-import urllib.request
 
 class UnityLibsUtils:
     def __init__(self):

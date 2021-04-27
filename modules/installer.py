@@ -23,8 +23,7 @@ class Installer:
         # Downloads Unity-Libs and extracts to Steam Library
         print("\nDownloading and Extracting Unity Libraries")
         self.utils.downloadFileAndUnzip(self.unitylibsutils.githubRawUrl, os.path.join(self.gameDirectory, "BepInEx", "unity-libs"))
-
-        print("Done!")
+        print("Done!\n")
 
     def uninstall(self):
         deleteFiles = ["BepInEx", "mono", "changelog.txt", "doorstop_config.ini", "winhttp.dll"]
@@ -40,6 +39,6 @@ class Installer:
                     print(f"Deleted: {pathOfFile}")
                 except:
                     print(f"Error with deleting: {pathOfFile}")
-        print("Done!")
+        print("Done!\n")
         return
 

@@ -1,9 +1,11 @@
-from os import path
 from tkinter import * 
 from tkinter.filedialog import askdirectory
 from tkinter import ttk
+
 import threading
 import sys
+from os import path
+
 from modules.gui import PrintLogger
 from modules.steamutils import SteamUtils
 from modules.bepinex import BepInExUtils
