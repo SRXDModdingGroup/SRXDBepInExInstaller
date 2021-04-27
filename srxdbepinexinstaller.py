@@ -2,13 +2,8 @@ from modules.args import ArgsUtils
 from modules.steamutils import SteamUtils
 from modules.bepinex import BepInExUtils
 # from modules.gui import GuiUtils
-from modules.utils import Utils
-from modules.unitylibs import UnityLibsUtils
+from modules.installer import Installer
 from modules.args import ArgsUtils
-
-# Init Modules
-unitylibsutils = UnityLibsUtils()
-utils = Utils()
 
 # Init Arg Vars
 uninstall = False
@@ -23,8 +18,13 @@ print("Getting Steam Info...")
 steamutils = SteamUtils()
 print(f"Found Game Path: {steamutils.gameDirectory}")
 
+# Init Installer Module
+installer = Installer(steamutils.gameDirectory)
+
 if (uninstall):
-    utils.uninstall(steamutils.gameDirectory)
+    if(steamutils.gameDirectory == ""):
+        steamutils.inputPathIfEmpty()
+    installer.uninstall()
 
 # Do rest of work:
 else:
@@ -36,10 +36,7 @@ else:
     url = bepinutils.downloadURLs[0]
     print(f"Found BepInExURL: {url}")
 
-    # Downloads BepInEx and extracts to Steam Library
-    print("\nDownloading and Installing BepInEx")
-    utils.downloadFileAndUnzip(url, steamutils.gameDirectory)
+    # Run installer
+    installer.install(bepinUrl=url)
 
-    # Downloads Unity-Libs and extracts to Steam Library
-    print("\nDownloading and Extracting Unity Libraries")
-    utils.downloadFileAndUnzip(unitylibsutils.githubRawUrl, steamutils.unityLibsDirectory)
+    

@@ -15,10 +15,13 @@ class SteamUtils:
             self.gameDirectory = self.getGameDirectory()
             # self.gameDirectory = "./test"
         except:
-            self.gameDirectory = self.inputPathIfEmpty()
-        
-        self.bepinDirectory = os.path.join(self.gameDirectory, "BepInEx")
-        self.unityLibsDirectory = os.path.join(self.bepinDirectory, "unity-libs")
+            self.gameDirectory = ""
+
+    def getbepinDirectory(self):
+        return os.path.join(self.gameDirectory, "BepInEx")
+
+    def getunityLibsDirectory(self):
+        return os.path.join(self.getbepinDirectory(), "unity-libs")
 
     def getSteamBasePath(self):
         baseSteamAppsPath = None
