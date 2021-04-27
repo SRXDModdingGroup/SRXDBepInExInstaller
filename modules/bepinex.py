@@ -1,5 +1,6 @@
 from html.parser import HTMLParser
 import urllib.request
+import re
 
 class BepInExUtils:
     def __init__(self):
@@ -11,6 +12,7 @@ class BepInExUtils:
         'Accept-Language': 'en-US,en;q=0.8',
         'Connection': 'keep-alive'}
         self.downloadURLs = []
+        self.downloadVersions = []
         self.initDownloadURLs()
 
     def initDownloadURLs(self):
@@ -26,6 +28,9 @@ class BepInExUtils:
         if (attrs.__len__() > 0):
             if (attrs[0][0] == "class"):
                 if (attrs[0][1] == "artifact-link" and "BepInEx_UnityIL2CPP_x64" in attrs[2][1]):
-                    self.downloadURLs.append(f"{bepinexSite}{attrs[2][1]}")
+                    pathPrefix = attrs[2][1]
+                    self.downloadURLs.append(f"{bepinexSite}{pathPrefix}")
+                    self.downloadVersions.append(re.search(r"(?<=be\/)(\d*?)(?=\/Be)", pathPrefix).group(0))
+
 
 

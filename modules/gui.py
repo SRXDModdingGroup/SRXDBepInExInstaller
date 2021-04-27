@@ -1,10 +1,22 @@
-import tkinter as tk
+from tkinter import *
+import sys
+
 
 class GuiUtils:
-    def run(self):
-        window = tk.Tk()
-        # to rename the title of the window
-        window.title("Installer")
-        # pack is used to show the object in the window
-        label = tk.Label(window, text = "Installer").pack()
-        window.mainloop()
+    def __init__(self):
+        return
+
+class PrintLogger(): # create file like object
+    def __init__(self, textbox): # pass reference to text widget
+        self.textbox = textbox # keep ref
+        self.textbox
+
+    def write(self, text):
+        self.textbox.config(state=NORMAL)
+        self.textbox.insert(END, text) # write text to textbox
+        self.textbox.config(state=DISABLED)
+        self.textbox.see(END)
+            # could also scroll to end of textbox here to make sure always visible
+
+    def flush(self): # needed for file like object
+        pass
