@@ -35,7 +35,11 @@ class GUIWindow:
         # Theme
         style = ttk.Style(win)
         style.theme_names()
-        win.tk.call('source', """./themes/azure-dark.tcl""")
+        try:
+            baseStylePath = sys._MEIPASS
+        except:
+            baseStylePath = "."
+        win.tk.call('source', path.join(baseStylePath, "themes", "azure-dark.tcl"))
         style.theme_use('azure-dark')
 
         # Softening Grid:
