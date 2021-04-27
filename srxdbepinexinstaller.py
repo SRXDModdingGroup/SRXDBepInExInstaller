@@ -16,6 +16,8 @@ for index, arg in enumerate(argsutils.getArgs()):
 # Init Steam Module
 print("Getting Steam Info...")
 steamutils = SteamUtils()
+if(steamutils.gameDirectory == ""):
+    steamutils.inputPathIfEmpty()
 print(f"Found Game Path: {steamutils.gameDirectory}")
 
 # Init Installer Module
