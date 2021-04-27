@@ -1,5 +1,6 @@
 from os import path
 from tkinter import * 
+from tkinter.filedialog import askdirectory
 from tkinter import ttk
 import threading
 import sys
@@ -40,8 +41,6 @@ class GUIWindow:
         win.grid_columnconfigure(1,  weight =1)
         win.grid_columnconfigure(2,  weight =1)
 
-       
-
         paddingInt = 3
         # Directory
         self.DirectoryInput = ttk.Entry(win)
@@ -50,6 +49,7 @@ class GUIWindow:
         # Selector
         self.DirectoryInputButton = ttk.Button(win, text=f'Select')
         self.DirectoryInputButton.grid(row=1, column=0, sticky=S+E+W, pady=paddingInt, padx=paddingInt)
+        self.DirectoryInputButton.bind("<Button>", self.choose)
         # DropDown
         self.VersionDropDown = ttk.Combobox(win, textvariable=self.selectedVersion, width=5)
         self.VersionDropDown.grid(row=1, column=3, sticky=S+E+W, pady=paddingInt, padx=paddingInt)
@@ -57,7 +57,7 @@ class GUIWindow:
         self.VersionDropDown.set(self.bepinutils.downloadVersions[0])
         
         # Install Button
-        self.installButton = ttk.Button(win, text=f'Installer', command=lambda isUninstall=False, : self.install(isUninstall))
+        self.installButton = ttk.Button(win, text=f'Install', command=lambda isUninstall=False, : self.install(isUninstall))
         self.installButton.grid(row=2, column=0, sticky=E+W, columnspan = 3, pady=paddingInt, padx=paddingInt)
 
         # Uninstall Button
@@ -77,6 +77,11 @@ class GUIWindow:
             installthread.start()
         else:
             print("Please Enter a Valid Path.")
+
+    def choose(self, args):
+        Tk().withdraw()
+        self.DirectoryInput.delete(0, END)
+        self.DirectoryInput.insert(0, askdirectory())
         
 window=Tk()
 mywin=GUIWindow(window)
