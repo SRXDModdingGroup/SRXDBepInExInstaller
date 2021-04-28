@@ -20,7 +20,7 @@ class GUIWindow:
         # self.UpperCanvas = Frame(self.win)
         # self.UpperCanvas.pack(expand=1, fill=BOTH)
         # self.UpperCanvas.grid(row=0, column=0, columnspan=3, sticky=NSEW)
-        self.consoleOutputText = Text(self.win, bg="black", border=0, state=DISABLED)
+        self.consoleOutputText = Text(self.win, bg="black", fg="white", border=0, state=DISABLED)
         self.consoleOutputText.pack(expand=1, fill=BOTH)
         self.consoleOutputText.grid(row=0, column=0, columnspan=4, sticky=NSEW,)
         pl = PrintLogger(self.consoleOutputText)
@@ -37,12 +37,19 @@ class GUIWindow:
         # Theme
         style = ttk.Style(self.win)
         style.theme_names()
+
+        if(hasattr(sys, "_MEIPASS")):
+            baseStylePath = sys._MEIPASS            
+        else:
+            baseStylePath = path.dirname(__file__)
+
+        print(__file__)
+        
         try:
-            baseStylePath = sys._MEIPASS
+            self.win.tk.call('source', path.join(baseStylePath, "themes", "azure-dark.tcl"))
+            style.theme_use('azure-dark')
         except:
-            baseStylePath = "."
-        self.win.tk.call('source', path.join(baseStylePath, "themes", "azure-dark.tcl"))
-        style.theme_use('azure-dark')
+            self
 
         # Softening Grid:
         n_rows =1
@@ -73,7 +80,7 @@ class GUIWindow:
         # Uninstall Button
         self.uninstallButton = ttk.Button(self.win, text=f'Uninstall', command=lambda isUninstall=True, : self.install(isUninstall))
         self.uninstallButton.grid(row=2, column=3, sticky=E+W, columnspan = 1, pady=paddingInt, padx=paddingInt)
-
+        
     def install(self, isUninstall):
         self.steamutils.gameDirectory = self.DirectoryInput.get()
         if(path.exists(self.steamutils.gameDirectory) or self.steamutils.gameDirectory != "" ):

@@ -1,7 +1,7 @@
 import os
 import sys
 
-command = "python -m nuitka --standalone --onefile --plugin-enable=tk-inter"
+command = "python -m nuitka --onefile --plugin-enable=tk-inter"
 
 rootDir = ".."
 fileName = "srxdbepinexinstallerui.pyw"
