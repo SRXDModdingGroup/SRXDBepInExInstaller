@@ -42,8 +42,6 @@ class GUIWindow:
             baseStylePath = sys._MEIPASS            
         else:
             baseStylePath = path.dirname(__file__)
-
-        print(__file__)
         
         try:
             self.win.tk.call('source', path.join(baseStylePath, "themes", "azure-dark.tcl"))
