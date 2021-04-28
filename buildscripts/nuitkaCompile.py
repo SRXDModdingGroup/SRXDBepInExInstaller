@@ -4,15 +4,15 @@ import sys
 command = "python -m nuitka --standalone --onefile --plugin-enable=tk-inter"
 
 rootDir = ".."
+fileName = "srxdbepinexinstallerui.pyw"
 
 if sys.platform == "win32":
     rootDir = f"{rootDir}\\"
-    command = f"{command} --mingw64"
-    command = f"{command} --windows-company-name=SRXDBepInExInstaller --windows-product-version=1.2.5 --windows-disable-console"
+    command = f"{command} --windows-company-name=SRXDBepInExInstaller --windows-product-version=1.2.0 --windows-disable-console --output-dir=dist"
 else:
     rootDir = f"{rootDir}/"
 
-command = f"{command} {rootDir}srxdbepinexinstallerui.pyw"
+command = f"{command} {rootDir}{fileName}"
 
 dataFiles = []
 
