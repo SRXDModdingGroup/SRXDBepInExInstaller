@@ -16,6 +16,10 @@ class SteamUtils:
             # self.gameDirectory = "./test"
         except:
             self.gameDirectory = ""
+            with path.join(".", "SpinRhythm.exe") as currentPathwithExec:
+                if (path.exists(currentPathwithExec)):
+                    self.gameDirectory = currentPathwithExec
+                    
 
     def getbepinDirectory(self):
         return os.path.join(self.gameDirectory, "BepInEx")
@@ -87,19 +91,13 @@ class SteamUtils:
 
     def inputPathIfEmpty(self):
         inputPath = None
-
-        currentPathwithExec = path.join(".", "SpinRhythm.exe")
-        if (path.exists(currentPathwithExec)):
-            inputPath = currentPathwithExec
-
-        else:
-            pathIsValid = False
-            while (not pathIsValid):
-                inputPath = input('Game Directory Could not be Found! This is Usually Something Like: "{usualPath}". \nPlease Enter (or Drag and Drop) your Spin Rhythm Game Folder Here: '.format(usualPath = path.join('C:\\','Program Files (x86)', 'Steam', 'steamapps\\')))
-                if (not inputPath.__len__() == 0 and path.exists(inputPath)):
-                    pathIsValid = True
-                else:
-                    print("Input Path was Invalid. Please Try Again...")   
+        pathIsValid = False
+        while (not pathIsValid):
+            inputPath = input('Game Directory Could not be Found! This is Usually Something Like: "{usualPath}". \nPlease Enter (or Drag and Drop) your Spin Rhythm Game Folder Here: '.format(usualPath = path.join('C:\\','Program Files (x86)', 'Steam', 'steamapps\\')))
+            if (not inputPath.__len__() == 0 and path.exists(inputPath)):
+                pathIsValid = True
+            else:
+                print("Input Path was Invalid. Please Try Again...")   
 
         inputPath = path.abspath(inputPath)              
         return inputPath

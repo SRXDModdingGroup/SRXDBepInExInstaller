@@ -29,7 +29,7 @@ class GUIWindow:
 
         # Init Modules and VersionVar
         self.steamutils = SteamUtils()
-        print(f"Found Game Path: {self.steamutils.gameDirectory}",)
+        print(f"Found Game Path: {self.steamutils.gameDirectory}")
 
         self.bepinutils = BepInExUtils()
         self.selectedVersion = StringVar()
