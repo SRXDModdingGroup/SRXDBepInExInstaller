@@ -1,6 +1,6 @@
 pyinstaller ../srxdbepinexinstaller.py --onefile
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+if [[ "$OSTYPE" == "msys" ]]; then
     pyinstaller ../srxdbepinexinstallerui.pyw --add-data="../themes;./themes" --onefile
-elif [[ "$OSTYPE" == "msys" ]];
+elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     pyinstaller ../srxdbepinexinstallerui.pyw --add-data="../themes:./themes" --onefile
 fi
