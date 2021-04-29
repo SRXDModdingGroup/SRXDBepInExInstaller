@@ -69,7 +69,7 @@ class GUIWindow:
         self.VersionDropDown = ttk.Combobox(self.win, textvariable=self.selectedVersion, width=5)
         self.VersionDropDown.grid(row=1, column=3, sticky=S+E+W, pady=paddingInt, padx=paddingInt)
         self.VersionDropDown['values'] = self.bepinutils.downloadVersions
-        self.VersionDropDown.set(self.bepinutils.downloadVersions[0])
+        self.VersionDropDown.set("362")
         
         # Install Button
         self.installButton = ttk.Button(self.win, text=f'Install', command=lambda isUninstall=False, : self.install(isUninstall))
