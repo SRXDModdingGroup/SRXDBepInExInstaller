@@ -23,7 +23,10 @@ class GUIWindow:
         self.initConsole()
 
         # Init Modules and VersionVar
-        threading.Thread(target=self.initModules, daemon=True).start()
+        print(f"Initialising...")
+        self.steamutils = SteamUtils()
+        print(f"Found Game Path: {self.steamutils.gameDirectory}")
+        threading.Thread(target=self.initLongModules, daemon=True).start()
 
         self.initTheme()
         self.initUI()
@@ -36,15 +39,11 @@ class GUIWindow:
         sys.stdout = pl
         print(GuiUtils().asciiArt)
 
-    def initModules(self):
-        self.steamutils = SteamUtils()
-        print(f"Found Game Path: {self.steamutils.gameDirectory}")
-
+    def initLongModules(self):
         self.bepinutils = BepInExUtils()
         if (len(self.bepinutils.downloadURLs) != 0):
             print(f"Got BepInEx Metadata from: {self.bepinutils.baseBepinexUrl}")
             self.canInstall = True
-
         self.initDropDown()
         print(f"Initialisation Finished.")
 
