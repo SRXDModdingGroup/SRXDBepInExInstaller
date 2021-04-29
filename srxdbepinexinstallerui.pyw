@@ -39,12 +39,12 @@ class GUIWindow:
     def initModules(self):
         self.steamutils = SteamUtils()
         print(f"Found Game Path: {self.steamutils.gameDirectory}")
-        try:
-            self.bepinutils = BepInExUtils()
-            print(f"Got BepInEx Metadata from {self.bepinutils.baseBepinexUrl}")
-        except:
-            print(f"{self.bepinutils.baseBepinexUrl} could not be accessed.")
-        self.canInstall = True
+
+        self.bepinutils = BepInExUtils()
+        if (len(self.bepinutils.downloadURLs) != 0):
+            print(f"Got BepInEx Metadata from: {self.bepinutils.baseBepinexUrl}")
+            self.canInstall = True
+
         self.initDropDown()
         print(f"Initialisation Finished.")
 

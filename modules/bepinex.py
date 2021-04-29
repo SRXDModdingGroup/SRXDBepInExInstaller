@@ -13,7 +13,10 @@ class BepInExUtils:
         'Connection': 'keep-alive'}
         self.downloadURLs = []
         self.downloadVersions = []
-        self.initDownloadURLs()
+        try:
+            self.initDownloadURLs()
+        except:
+            print(f"{self.baseBepinexUrl} could not be accessed.")
 
     def initDownloadURLs(self):
         request = urllib.request.Request(f"{self.baseBepinexUrl}/projects/bepinex_be", headers = self.requestHeaders)
