@@ -58,7 +58,7 @@ class GUIWindow:
             baseStylePath = path.dirname(__file__)
         
         try:
-            self.win.tk.call('source', path.join(baseStylePath, "themes", "azure-dark.tcl"))
+            self.win.tk.call('source', path.join(baseStylePath, "assets", "themes", "azure-dark.tcl"))
             style.theme_use('azure-dark')
         except:
             self

@@ -12,7 +12,7 @@ flag = os.path.exists(f'{guiFile}.pyw')
 
 # Dependencies are automatically detected, but some modules need help.
 buildOptions = dict(
-    include_files = [f'../themes/'],
+    include_files = [f'../assets/'],
     packages = [],
     excludes = [],
     # We can list binary includes here if our target environment is missing them.

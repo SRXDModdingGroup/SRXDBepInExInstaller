@@ -16,7 +16,7 @@ command = f"{command} {rootDir}{fileName}"
 
 dataFiles = []
 
-for root, dirs, files in os.walk(os.path.join(rootDir, "themes")):
+for root, dirs, files in os.walk(os.path.join(rootDir, "assets")):
     for file in files:
         filePath = os.path.join(root, file)
         dataFiles.append({"source": filePath, "output":filePath[len(rootDir):]})
