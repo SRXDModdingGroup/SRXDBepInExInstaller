@@ -7,6 +7,7 @@ import time
 import pathlib
 from modules.unitylibs import UnityLibsUtils
 from modules.utils import Utils
+from modules.config import ConfigUtils
 
 # Instantiate with game directory.
 class Installer:
@@ -24,6 +25,9 @@ class Installer:
         # Downloads Unity-Libs and extracts to Steam Library
         print("\nDownloading and Extracting Unity Libraries")
         self.utils.downloadFileAndUnzip(self.unitylibsutils.githubRawUrl, os.path.join(self.gameDirectory, "BepInEx", "unity-libs"))
+
+        ConfigUtils(os.path.join(self.gameDirectory, "BepInEx", "config", "BepInEx.cfg")).setAttr("Logging.Console", "Enabled", "true")
+
         print("Done!\n")
 
     def uninstall(self):

@@ -12,6 +12,15 @@ from modules.steamutils import SteamUtils
 from modules.bepinex import BepInExUtils
 from modules.installer import Installer
 
+def show_exception_and_exit(exc_type, exc_value, tb):
+    import traceback
+    traceback.print_exception(exc_type, exc_value, tb)
+    input("Press key to exit.")
+    sys.exit(-1)
+
+import sys
+sys.excepthook = show_exception_and_exit
+
 class GUIWindow:
     def __init__(self, win : Tk):
         self.win = win
@@ -30,6 +39,7 @@ class GUIWindow:
 
         self.initTheme()
         self.initUI()
+        raise ValueError('A very specific bad thing happened.')
 
     def initConsole(self):
         self.consoleOutputText = Text(self.win, bg="black", fg="white", border=0, state=DISABLED)
@@ -117,13 +127,20 @@ class GUIWindow:
                 elif (isUninstall):
                     installthread = threading.Thread(target=installerInstance.uninstall, daemon=True).start()
                 else:
-                    print("Installer may not have initialised properly yet.")
-                
+                    print("Installer may not have initialised properly yet.") 
             else:
                 print("Please Enter a Valid Path.")
-        
-window=Tk()
-mywin=GUIWindow(window)
-window.title('SRXDBepInExInstaller')
-window.geometry("520x405")
-window.mainloop()
+
+try:
+    window=Tk()
+    mywin=GUIWindow(window)
+    window.title('SRXDBepInExInstaller')
+    window.geometry("520x405")
+    window.mainloop()
+except Exception as e:
+    from tkinter import messagebox
+    messagebox.Message().show(title=e, message=e)
+
+
+
+
