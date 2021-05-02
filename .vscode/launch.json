@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/srxdbepinexinstallerui.pyw",
             "console": "integratedTerminal"
-        }
+        },
         {
             "name": "Python: CLI",
             "type": "python",

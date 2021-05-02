@@ -8,6 +8,8 @@ import pathlib
 from modules.unitylibs import UnityLibsUtils
 from modules.downloadutils import DownloadUtils
 from modules.config import ConfigUtils
+from modules.directoryfiller import DirectoryFiller
+
 
 # Instantiate with game directory.
 class Installer:
@@ -22,13 +24,19 @@ class Installer:
         print("\nDownloading and Installing BepInEx")
         self.utils.downloadFileAndUnzip(bepinUrl, self.gameDirectory)
 
+        bepinPath = os.path.join(self.gameDirectory, "BepInEx")
+
         # Downloads Unity-Libs and extracts to Steam Library
         print("\nDownloading and Extracting Unity Libraries")
-        self.utils.downloadFileAndUnzip(self.unitylibsutils.githubRawUrl, os.path.join(self.gameDirectory, "BepInEx", "unity-libs"))
+        self.utils.downloadFileAndUnzip(self.unitylibsutils.githubRawUrl, os.path.join(bepinPath, "unity-libs"))
 
-        ConfigUtils(os.path.join(self.gameDirectory, "BepInEx", "config", "BepInEx.cfg")).setAttr("Logging.Console", "Enabled", "true")
-
-        print("Done!\n")
+        try:
+            DirectoryFiller(self.gameDirectory).fillWithBepinExFolders()
+            ConfigUtils(os.path.join(bepinPath, "config", "BepInEx.cfg")).setAttr("Logging.Console", "Enabled", "true")
+        except Exception as e:
+            print(f'Post-Installation Scripts have Failed to Run. "Logging.Console" will not Enabled by Default. Exception: {e}')
+        
+        print('Done!\n You can put your Mods in "{}"'.format(os.path.join(bepinPath, "plugins")))
 
     def uninstall(self):
         print("Uninstalling...")
