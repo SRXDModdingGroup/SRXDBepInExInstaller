@@ -5,7 +5,7 @@ import os
 import shutil
 import pathlib
 
-class Utils:
+class DownloadUtils:
     def __init__(self):
         self.requestHeaders = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
         'Accept': '*/*',
@@ -55,21 +55,5 @@ class Utils:
             print(f"Deleted: {tempZipPath}")
         except Exception as e:
             raise Exception("Could not Download:\n"+e)
-        return
-
-    def uninstall(self, gamePath):
-        deleteFiles = ["BepInEx", "mono", "changelog.txt", "doorstop_config.ini", "winhttp.dll"]
-        for file in deleteFiles:
-            pathOfFile = os.path.join(gamePath, file)
-            if (os.path.exists(pathOfFile)):
-                suffixOfFile = pathlib.Path(pathOfFile).suffix
-                try:
-                    if (suffixOfFile == ""):
-                        self.recursiveDeleteFolder(pathOfFile)
-                    else:
-                        self.deleteFile(pathOfFile)
-                    print(f"Deleted: {pathOfFile}")
-                except:
-                    print(f"Error with deleting: {pathOfFile}")
         return
 

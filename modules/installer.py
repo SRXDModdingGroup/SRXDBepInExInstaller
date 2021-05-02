@@ -6,14 +6,14 @@ import shutil
 import time
 import pathlib
 from modules.unitylibs import UnityLibsUtils
-from modules.utils import Utils
+from modules.downloadutils import DownloadUtils
 from modules.config import ConfigUtils
 
 # Instantiate with game directory.
 class Installer:
     def __init__(self, gameDirectory):
         self.unitylibsutils = UnityLibsUtils()
-        self.utils = Utils()
+        self.utils = DownloadUtils()
         self.gameDirectory = gameDirectory
         return
 
