@@ -35,7 +35,7 @@ else:
     bepinutils = BepInExUtils()
 
     # Get Download URL
-    url = bepinutils.downloadURLs[0]
+    url = bepinutils.downloadURLs[bepinutils.downloadVersions.index("353")]
     print(f"Found BepInExURL: {url}")
 
     # Run installer

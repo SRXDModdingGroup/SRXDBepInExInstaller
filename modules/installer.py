@@ -20,6 +20,7 @@ class Installer:
         return
 
     def install(self, bepinUrl): 
+        print("The Default (Preferred) Version is Now 353. If you'd Like to Try Something Newer, Please Select A Newer Version.")
         # Downloads BepInEx and extracts to Steam Library
         print("\nDownloading and Installing BepInEx")
         self.utils.downloadFileAndUnzip(bepinUrl, self.gameDirectory)
@@ -36,7 +37,7 @@ class Installer:
         except Exception as e:
             print(f'Post-Installation Scripts have Failed to Run. "Logging.Console" will not Enabled by Default. Exception: {e}')
         
-        print('Done!\n You can put your Mods in "{}"'.format(os.path.join(bepinPath, "plugins")))
+        print('Done!\nYou Can Now Put Your Mods in "{}"'.format(os.path.join(bepinPath, "plugins")))
 
     def uninstall(self):
         print("Uninstalling...")
