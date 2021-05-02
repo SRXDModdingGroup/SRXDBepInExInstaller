@@ -6,7 +6,7 @@ class ConfigUtils:
         self.configLocation = configLocation
         try:
             if (not os.path.exists(configLocation)):
-                print("Creating Config File")
+                print("Creating Config File...")
                 with open(configLocation, mode='w', encoding="utf-8-sig"):
                     os.utime(configLocation, None)
             self.cfgparse = configparser.SafeConfigParser()
@@ -19,16 +19,18 @@ class ConfigUtils:
         print("Config File Could no be Edited.")
     def setAttr(self, section, key, value):
         try:
-            with open(self.configLocation, 'w', encoding="utf-8-sig") as configfile:
-                if (not section in self.cfgparse.sections() and not self.cfgparse.has_option(section, key)):
+            if (not section in self.cfgparse.sections() and not self.cfgparse.has_option(section, key)):
+                with open(self.configLocation, 'w+', encoding="utf-8-sig") as configfile:
                     self.cfgparse.add_section(section)
                     self.cfgparse.set(section, key, value)
                     self.cfgparse.write(configfile)
-                elif (self.cfgparse.get(section, key) != value):
+            elif (self.cfgparse.get(section, key) != value):
+                with open(self.configLocation, 'w+', encoding="utf-8-sig") as configfile:
                     self.cfgparse.set(section, key, value)
                     self.cfgparse.write(configfile)
+            print(f'Set ([{section}] - "{key}") to "{value}"')
         except:
-            self
+            self.errormessage()
         return
 
     def getAttr(self, section, key):
