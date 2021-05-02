@@ -40,18 +40,21 @@ class Utils:
 
     # Makes everything easier to download and unzip
     def downloadFileAndUnzip(self, url, outputDirPath):
-        # Get and Save File
-        downloadedFile = self.download(url)
-        fileObject, tempZipPath = self.saveResponseAsTempFile(downloadedFile)
-        print(f"Saved Temp Zip: {tempZipPath}")
+        try:
+            # Get and Save File
+            downloadedFile = self.download(url)
+            fileObject, tempZipPath = self.saveResponseAsTempFile(downloadedFile)
+            print(f"Saved Temp Zip: {tempZipPath}")
 
-        # Unzip File to 
-        self.unzipTo(tempZipPath, f"{outputDirPath}")
-        print(f"Unzipped: {tempZipPath} => {outputDirPath}")
+            # Unzip File to 
+            self.unzipTo(tempZipPath, f"{outputDirPath}")
+            print(f"Unzipped: {tempZipPath} => {outputDirPath}")
 
-        # Deletes temp zip
-        self.deleteFile(tempZipPath)
-        print(f"Deleted: {tempZipPath}")
+            # Deletes temp zip
+            self.deleteFile(tempZipPath)
+            print(f"Deleted: {tempZipPath}")
+        except Exception as e:
+            raise Exception("Could not Download:\n"+e)
         return
 
     def uninstall(self, gamePath):

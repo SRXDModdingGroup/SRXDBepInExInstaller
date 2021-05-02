@@ -7,7 +7,6 @@ import ast
 class SteamUtils:
     def __init__(self):
         self.platform = sys.platform
-
         try:
             self.baseSteamPath = self.getSteamBasePath()
             self.steamCommonPathArray = self.getAllSteamAppsPath()
