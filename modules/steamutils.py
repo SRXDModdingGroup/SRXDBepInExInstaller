@@ -8,16 +8,17 @@ class SteamUtils:
     def __init__(self):
         self.platform = sys.platform
         try:
-            self.baseSteamPath = self.getSteamBasePath()
-            self.steamCommonPathArray = self.getAllSteamAppsPath()
+            SRXDInCurrentPath = path.join(".", "SpinRhythm.exe")
+            if (path.exists(SRXDInCurrentPath)):
+                self.gameDirectory = SRXDInCurrentPath
+            else:
+                self.baseSteamPath = self.getSteamBasePath()
+                self.steamCommonPathArray = self.getAllSteamAppsPath()
 
-            self.gameDirectory = self.getGameDirectory()
-            # self.gameDirectory = "./test"
+                self.gameDirectory = self.getGameDirectory()
+                # self.gameDirectory = "./test"
         except:
             self.gameDirectory = ""
-            with path.join(".", "SpinRhythm.exe") as currentPathwithExec:
-                if (path.exists(currentPathwithExec)):
-                    self.gameDirectory = currentPathwithExec
                     
 
     def getbepinDirectory(self):
