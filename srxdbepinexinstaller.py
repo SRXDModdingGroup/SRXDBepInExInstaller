@@ -40,7 +40,7 @@ def main():
         print(f"Found BepInExURL: {url}")
 
         # Run installer
-        installer.install(bepinUrl=url)
+        installer.install(bepinUrl=url, installUnityLibs=True)
 try:
     main()
 except Exception as e:

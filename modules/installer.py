@@ -19,7 +19,7 @@ class Installer:
         self.gameDirectory = gameDirectory
         return
 
-    def install(self, bepinUrl): 
+    def install(self, bepinUrl:str, installUnityLibs:bool): 
         print("The Default (Preferred) Version is Now 353. If you'd Like to Try Something Newer, Please Select A Newer Version.")
         # Downloads BepInEx and extracts to Steam Library
         print("\nDownloading and Installing BepInEx")
@@ -28,8 +28,9 @@ class Installer:
         bepinPath = os.path.join(self.gameDirectory, "BepInEx")
 
         # Downloads Unity-Libs and extracts to Steam Library
-        print("\nDownloading and Extracting Unity Libraries")
-        self.utils.downloadFileAndUnzip(self.unitylibsutils.githubRawUrl, os.path.join(bepinPath, "unity-libs"))
+        if (installUnityLibs):
+            print("\nDownloading and Extracting Unity Libraries")
+            self.utils.downloadFileAndUnzip(self.unitylibsutils.githubRawUrl, os.path.join(bepinPath, "unity-libs"))
 
         try:
             DirectoryFiller(self.gameDirectory).fillWithBepinExFolders()

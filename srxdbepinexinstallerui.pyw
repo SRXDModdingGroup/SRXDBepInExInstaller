@@ -112,8 +112,11 @@ class GUIWindow:
                 installerInstance = Installer(self.steamutils.gameDirectory)
                 installthread = None
                 if (not isUninstall and self.canInstall):
+                    installUnityLibs = True
                     downloadUrl = self.bepinutils.downloadURLs[self.bepinutils.downloadVersions.index(self.selectedVersion.get())]
-                    installthread = threading.Thread(target=installerInstance.install, args=(downloadUrl,), daemon=True).start()
+                    if (int(self.selectedVersion.get()) >= 378):
+                        installUnityLibs = False
+                    installthread = threading.Thread(target=installerInstance.install, args=(downloadUrl, installUnityLibs), daemon=True).start()
                 elif (isUninstall):
                     installthread = threading.Thread(target=installerInstance.uninstall, daemon=True).start()
                 else:
