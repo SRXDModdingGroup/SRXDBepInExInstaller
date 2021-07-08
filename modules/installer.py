@@ -20,7 +20,6 @@ class Installer:
         return
 
     def install(self, bepinUrl:str, installUnityLibs:bool): 
-        print("The Default (Preferred) Version is Now 353. If you'd Like to Try Something Newer, Please Select A Newer Version.")
         # Downloads BepInEx and extracts to Steam Library
         print("\nDownloading and Installing BepInEx")
         self.utils.downloadFileAndUnzip(bepinUrl, self.gameDirectory)
