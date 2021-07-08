@@ -94,7 +94,7 @@ class GUIWindow:
         self.VersionDropDown.grid(row=1, column=3, sticky=S+E+W, pady=self.paddingInt, padx=self.paddingInt)
         try:
             self.VersionDropDown['values'] = self.bepinutils.downloadVersions
-            self.VersionDropDown.set("353")
+            self.VersionDropDown.set("381")
         except:
             self.VersionDropDown.set("Loading...")
     def initButtons(self):

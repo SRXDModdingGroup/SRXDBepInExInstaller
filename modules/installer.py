@@ -31,6 +31,8 @@ class Installer:
         if (installUnityLibs):
             print("\nDownloading and Extracting Unity Libraries")
             self.utils.downloadFileAndUnzip(self.unitylibsutils.githubRawUrl, os.path.join(bepinPath, "unity-libs"))
+        else:
+            self.utils.recursiveDeleteFolder(os.path.join(bepinPath, "unity-libs"))
 
         try:
             DirectoryFiller(self.gameDirectory).fillWithBepinExFolders()

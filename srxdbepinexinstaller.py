@@ -36,11 +36,11 @@ def main():
         bepinutils = BepInExUtils()
 
         # Get Download URL
-        url = bepinutils.downloadURLs[bepinutils.downloadVersions.index("353")]
+        url = bepinutils.downloadURLs[bepinutils.downloadVersions.index("381")]
         print(f"Found BepInExURL: {url}")
 
         # Run installer
-        installer.install(bepinUrl=url, installUnityLibs=True)
+        installer.install(bepinUrl=url, installUnityLibs=False)
 try:
     main()
 except Exception as e:
