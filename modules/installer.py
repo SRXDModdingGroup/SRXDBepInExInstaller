@@ -26,12 +26,13 @@ class Installer:
 
         bepinPath = os.path.join(self.gameDirectory, "BepInEx")
 
+        unityLibsFolder = os.path.join(bepinPath, "unity-libs")
         # Downloads Unity-Libs and extracts to Steam Library
         if (installUnityLibs):
             print("\nDownloading and Extracting Unity Libraries")
-            self.utils.downloadFileAndUnzip(self.unitylibsutils.githubRawUrl, os.path.join(bepinPath, "unity-libs"))
-        else:
-            self.utils.recursiveDeleteFolder(os.path.join(bepinPath, "unity-libs"))
+            self.utils.downloadFileAndUnzip(self.unitylibsutils.githubRawUrl, unityLibsFolder)
+        elif(os.path.exists(unityLibsFolder)):
+            self.utils.recursiveDeleteFolder(unityLibsFolder)
 
         try:
             DirectoryFiller(self.gameDirectory).fillWithBepinExFolders()
