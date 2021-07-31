@@ -33,9 +33,9 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: srxdbepinexinstallerlinux
-        path: buildscripts/srxdbepinexinstaller
+        path: buildscripts/dist/srxdbepinexinstaller
     - name: Upload linux gui artifact
       uses: actions/upload-artifact@v2
       with:
         name: srxdbepinexinstallerguilinux
-        path: buildscripts/srxdbepinexinstallergui
+        path: buildscripts/dist/srxdbepinexinstallergui
