@@ -10,6 +10,36 @@ on:
     branches: [ main ]
 
 jobs:
+  windows-build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Build
+      run: |
+        cd buildscripts
+        ./PyInstallerBuild.sh
+        ls
+      shell: bash
+    - name: Upload Windows artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: srxdbepinexinstaller.exe
+        path: buildscripts/dist/srxdbepinexinstaller.exe
+    - name: Upload Windows gui artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: srxdbepinexinstallerui.exe
+        path: buildscripts/dist/srxdbepinexinstallerui.exe
+
   linux-build:
     runs-on: ubuntu-latest
     steps:
@@ -28,12 +58,12 @@ jobs:
         cd buildscripts
         ./PyInstallerBuild.sh
         ls
-    - name: Upload linux artifact
+    - name: Upload Linux artifact
       uses: actions/upload-artifact@v2
       with:
         name: srxdbepinexinstallerlinux
         path: buildscripts/dist/srxdbepinexinstaller
-    - name: Upload linux gui artifact
+    - name: Upload Linux gui artifact
       uses: actions/upload-artifact@v2
       with:
         name: srxdbepinexinstalleruilinux
