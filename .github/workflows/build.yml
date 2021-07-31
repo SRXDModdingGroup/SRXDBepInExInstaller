@@ -12,7 +12,6 @@ on:
 jobs:
   linux-build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.8.9
@@ -37,5 +36,5 @@ jobs:
     - name: Upload linux gui artifact
       uses: actions/upload-artifact@v2
       with:
-        name: srxdbepinexinstallerguilinux
-        path: buildscripts/dist/srxdbepinexinstallergui
+        name: srxdbepinexinstalleruilinux
+        path: buildscripts/dist/srxdbepinexinstallerui
