@@ -29,3 +29,13 @@ jobs:
       run: |
         cd buildscripts
         ./PyInstallerBuild.sh
+    - name: Upload linux artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: srxdbepinexinstallerlinux
+        path: buildscripts/srxdbepinexinstaller
+    - name: Upload linux gui artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: srxdbepinexinstallerguilinux
+        path: buildscripts/srxdbepinexinstallergui
