@@ -13,9 +13,11 @@ class SteamUtils:
                 self.gameDirectory = SRXDInCurrentPath
             else:
                 self.baseSteamPath = self.getSteamBasePath()
-                self.steamCommonPathArray = self.getAllSteamAppsPath()
+                self.gameDirectory = path.join(self.baseSteamPath, "common", "Spin Rhythm")
+                if (not os.path.exists(self.gameDirectory)):
+                    self.steamCommonPathArray = self.getAllSteamAppsPath()
 
-                self.gameDirectory = self.getGameDirectory()
+                    self.gameDirectory = self.getGameDirectory()
                 # self.gameDirectory = "./test"
         except:
             self.gameDirectory = ""
