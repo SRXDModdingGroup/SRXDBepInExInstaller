@@ -5,6 +5,7 @@ import os
 import shutil
 import time
 import pathlib
+import glob
 from modules.unitylibs import UnityLibsUtils
 from modules.downloadutils import DownloadUtils
 from modules.config import ConfigUtils
@@ -42,14 +43,23 @@ class Installer:
         
         print('Done!\nYou Can Now Put Your Mods in "{}"'.format(os.path.join(bepinPath, "plugins")))
 
-    def uninstall(self):
+    def uninstall(self, deletePlugins:bool = False):
         print("Uninstalling...")
+        
         if (os.path.exists(os.path.join(self.gameDirectory, "MelonLoader"))):
             print("MelonLoader was detected in your game folder. If you'd like for this to be deleted, this will be done in 10 seconds. If not, PLEASE CLOSE THIS APPLICATION NOW!")
             time.sleep(10)
             self.deleteFiles(["MelonLoader", "Plugins", "Mods", "Logs", "version.dll"])
-        else:
-            self.deleteFiles(["BepInEx", "mono", "changelog.txt", "doorstop_config.ini", "winhttp.dll"])        
+        elif (deletePlugins):
+            self.deleteFiles(["BepInEx", "mono", "changelog.txt", "doorstop_config.ini", "winhttp.dll"])
+        elif (not deletePlugins):
+            willDelList = ["mono", "changelog.txt", "doorstop_config.ini", "winhttp.dll"]
+            for fileOrFolder in glob.glob(os.path.join(self.gameDirectory, "BepInEx", "*")):
+                fileBName = os.path.basename(fileOrFolder)
+                if fileBName != "plugins" and fileBName != "config":
+                    willDelList.append(os.path.join("BepInEx", fileBName))
+            self.deleteFiles(willDelList)
+                
         print("Done!\n")
         return
 
