@@ -43,16 +43,16 @@ class Installer:
         
         print('Done!\nYou Can Now Put Your Mods in "{}"'.format(os.path.join(bepinPath, "plugins")))
 
-    def uninstall(self, deletePlugins:bool = False):
+    def uninstall(self, preservePlugins:bool = True):
         print("Uninstalling...")
         
         if (os.path.exists(os.path.join(self.gameDirectory, "MelonLoader"))):
             print("MelonLoader was detected in your game folder. If you'd like for this to be deleted, this will be done in 10 seconds. If not, PLEASE CLOSE THIS APPLICATION NOW!")
             time.sleep(10)
             self.deleteFiles(["MelonLoader", "Plugins", "Mods", "Logs", "version.dll"])
-        elif (deletePlugins):
+        elif (not preservePlugins):
             self.deleteFiles(["BepInEx", "mono", "changelog.txt", "doorstop_config.ini", "winhttp.dll"])
-        elif (not deletePlugins):
+        elif (preservePlugins):
             willDelList = ["mono", "changelog.txt", "doorstop_config.ini", "winhttp.dll"]
             for fileOrFolder in glob.glob(os.path.join(self.gameDirectory, "BepInEx", "*")):
                 fileBName = os.path.basename(fileOrFolder)

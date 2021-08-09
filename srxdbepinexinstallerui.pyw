@@ -1,5 +1,5 @@
 from tkinter import *
-import tkinter 
+from tkinter import messagebox
 from tkinter.filedialog import askdirectory
 from tkinter import ttk
 
@@ -118,7 +118,8 @@ class GUIWindow:
                         installUnityLibs = False
                     installthread = threading.Thread(target=installerInstance.install, args=(downloadUrl, installUnityLibs), daemon=True).start()
                 elif (isUninstall):
-                    installthread = threading.Thread(target=installerInstance.uninstall, daemon=True).start()
+                    preservePlugins = bool(messagebox.askyesno('Preserve Backup Files', 'Would you still like to keep the "plugins" and "config" folders inside "BepInEx"?'))
+                    installthread = threading.Thread(target=installerInstance.uninstall, args=(preservePlugins, ), daemon=True).start()
                 else:
                     print("Installer may not have initialised properly yet.") 
             else:
@@ -131,7 +132,6 @@ try:
     window.geometry("520x405")
     window.mainloop()
 except Exception as e:
-    from tkinter import messagebox
     messagebox.Message().show(title=e, message=e)
 
 
