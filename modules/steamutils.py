@@ -2,7 +2,7 @@ import sys
 import os
 from os import path
 import re
-import ast
+import json
 
 class SteamUtils:
     def __init__(self):
@@ -15,9 +15,7 @@ class SteamUtils:
                 self.baseSteamPath = self.getSteamBasePath()
                 self.gameDirectory = path.join(self.baseSteamPath, "common", "Spin Rhythm")
                 if (not os.path.exists(self.gameDirectory)):
-                    self.steamCommonPathArray = self.getAllSteamAppsPath()
-
-                    self.gameDirectory = self.getGameDirectory()
+                    self.gameDirectory = self.getGameDirFromVDF()
                 # self.gameDirectory = "./test"
         except:
             self.gameDirectory = ""
@@ -40,56 +38,33 @@ class SteamUtils:
             baseSteamAppsPath = None
         return baseSteamAppsPath
         
-    def getAllSteamAppsPath(self):
-        arrayOfPaths = []
-
-        basicSteamCommonPath = path.join(self.baseSteamPath, "common")
+    def getGameDirFromVDF(self):
+        returnVal = ""
 
         vdfDirectory = path.join(self.baseSteamPath, "libraryfolders.vdf")
         
-        if (path.exists(basicSteamCommonPath)):
-            arrayOfPaths.append(basicSteamCommonPath)
-        vdfDictionary = self.vdfToDict(open(vdfDirectory))
-        for value in vdfDictionary:
-            tempCommonPath = path.join(vdfDictionary[value], "steamapps", "common")
-            if (value.isdigit() and path.exists(tempCommonPath)):
-                arrayOfPaths.append(tempCommonPath)
-        return arrayOfPaths
+        for key, value in self.vdfToDict(open(vdfDirectory).read()).items():
+            if (key.isdigit() and "1058830" in value["apps"]):
+                returnVal = os.path.join(value["path"], "steamapps", "common", "Spin Rhythm")
+        # for value in vdfDictionary:
+        #     tempCommonPath = path.join(vdfDictionary[value], "steamapps", "common")
+        #     if (value.isdigit() and path.exists(tempCommonPath)):
+        #         arrayOfPaths.append(tempCommonPath)
+        return returnVal
         
         
-    def vdfToDict(self, vdfText):
+    def vdfToDict(self, vdfText) -> dict:
         dictionary = {}
         newVdfText = ""
-        for idx, line in enumerate(vdfText):
-            if (idx != 0):
-                regexSearch = re.search('\s"[\s\S]*"\t', line)
-                if (regexSearch != None):
-                    line = line[:regexSearch.end()] + ":" + line[regexSearch.end():]
-                    line = line[:-1]
-                    line = f"{line},\n"
-                newVdfText = newVdfText + line
-        return ast.literal_eval(newVdfText)
-
-    def getGameDirectory(self):
-        gameDirectory = None
-        allGameDirectories = []
-        for commonPath in self.steamCommonPathArray:
-            onlyDirectories = [path.join(commonPath, f) for f in os.listdir(commonPath) if not path.isfile(path.join(commonPath, f))]
-            allGameDirectories.extend(onlyDirectories)
-        for directory in allGameDirectories:            
-            # Easier Way:
-            execPath = path.join(directory, "SpinRhythm.exe")
-            if (path.exists(execPath)):
-                gameDirectory = directory
-
-            if (gameDirectory == None):
-                # Old Appid Way:
-                appIDFile = path.join(directory, "steam_appid.txt")
-                if (path.exists(appIDFile)):
-                    appid = open(appIDFile).readline().replace("\n", "")
-                    if (appid == "1058830"):
-                        gameDirectory = directory
-        return gameDirectory
+        vdfText = re.sub(r'"\n[\s+]*"', '", "', vdfText.split("\n",1)[1]).strip()
+        vdfText = re.sub(r"\s+", ' ', vdfText).replace('" "', '" : "').replace('" {', '" : {')
+        # for idx, line in enumerate(vdfText):
+        #     line = line.strip()
+        #     if (idx != 0):
+        #         re.sub(r"\s+", " ", line)
+                
+        #         newVdfText = newVdfText + line
+        return json.loads(vdfText)
 
     def inputPathIfEmpty(self):
         inputPath = None
