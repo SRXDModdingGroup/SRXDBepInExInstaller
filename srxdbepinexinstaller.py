@@ -36,9 +36,8 @@ def main():
         bepinutils = BepInExUtils()
 
         # Get Download URL
-        url = bepinutils.downloadURLs[bepinutils.downloadVersions.index("381")]
+        url = bepinutils.downloadURLs[0]
         print(f"Found BepInExURL: {url}")
-
         # Run installer
         installer.install(bepinUrl=url, installUnityLibs=False)
 try:
