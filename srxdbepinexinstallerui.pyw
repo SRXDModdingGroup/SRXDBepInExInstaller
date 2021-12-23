@@ -9,7 +9,7 @@ from os import path
 
 from modules.gui import GuiUtils, PrintLogger
 from modules.steamutils import SteamUtils
-from modules.bepinex import BepInExUtils
+from modules.github import GitHubUtils
 from modules.installer import Installer
 
 class GUIWindow:
@@ -40,9 +40,9 @@ class GUIWindow:
         print(GuiUtils().asciiArt)
 
     def initLongModules(self):
-        self.bepinutils = BepInExUtils()
+        self.bepinutils = GitHubUtils()
         if (len(self.bepinutils.downloadURLs) != 0):
-            print(f"Got BepInEx Metadata from: {self.bepinutils.baseBepinexUrl}")
+            print(f"Got BepInEx Metadata from: {self.bepinutils.baseUrl}")
             self.canInstall = True
         self.initDropDown()
         print(f"Initialisation Finished.")
@@ -112,10 +112,10 @@ class GUIWindow:
                 installerInstance = Installer(self.steamutils.gameDirectory)
                 installthread = None
                 if (not isUninstall and self.canInstall):
-                    installUnityLibs = True
+                    installUnityLibs = False
                     downloadUrl = self.bepinutils.downloadURLs[self.bepinutils.downloadVersions.index(self.selectedVersion.get())]
-                    if (int(self.selectedVersion.get()) >= 378):
-                        installUnityLibs = False
+                    if (self.selectedVersion.get().isnumeric() and int(self.selectedVersion.get()) < 378):
+                        installUnityLibs = True
                     installthread = threading.Thread(target=installerInstance.install, args=(downloadUrl, installUnityLibs), daemon=True).start()
                 elif (isUninstall):
                     preservePlugins = bool(messagebox.askyesno('Preserve Backup Files', 'Would you still like to keep the "plugins" and "config" folders inside "BepInEx"?'))
