@@ -2,6 +2,7 @@ import zipfile
 import urllib.request
 import tempfile
 import os
+from os import path
 import shutil
 import time
 import pathlib
@@ -18,6 +19,7 @@ class Installer:
         self.unitylibsutils = UnityLibsUtils()
         self.utils = DownloadUtils()
         self.gameDirectory = gameDirectory
+        self.unityplayermovemsg = "UnityPlayer.dll could not be moved! It is advisable to delete any files starting with \"UnityPlayer\" in your directory, and click on Steam > SRXD Properties > Local Files > Verify Integrity."
         return
 
     def install(self, bepinUrl:str, installUnityLibs:bool): 
@@ -40,7 +42,22 @@ class Installer:
             ConfigUtils(os.path.join(bepinPath, "config", "BepInEx.cfg")).setAttr("Logging.Console", "Enabled", "true")
         except Exception as e:
             print(f'Post-Installation Scripts have Failed to Run. "Logging.Console" will not Enabled by Default. Exception: {e}')
-        
+
+        if (path.exists(path.join(self.gameDirectory, "UnityPlayer_Mono.dll")) and not path.islink(path.join(self.gameDirectory, "UnityPlayer.dll"))):
+            try:
+                shutil.move(
+                    path.join(self.gameDirectory, "UnityPlayer.dll"),
+                    path.join(self.gameDirectory, "UnityPlayer.bak.dll")
+                )
+                os.symlink(
+                    path.join(self.gameDirectory, "UnityPlayer_Mono.dll"),
+                    path.join(self.gameDirectory, "UnityPlayer.dll")
+                )
+            except Exception as e:
+                print(self.unityplayermovemsg)
+        else:
+            print(self.unityplayermovemsg)
+
         print('Done!\nYou Can Now Put Your Mods in "{}"'.format(os.path.join(bepinPath, "plugins")))
 
     def uninstall(self, preservePlugins:bool = True):
@@ -59,7 +76,19 @@ class Installer:
                 if fileBName != "plugins" and fileBName != "config":
                     willDelList.append(os.path.join("BepInEx", fileBName))
             self.deleteFiles(willDelList)
-                
+
+        if (path.islink(path.join(self.gameDirectory, "UnityPlayer.dll"))):
+            try:
+                os.remove(path.join(self.gameDirectory, "UnityPlayer.dll"))
+                shutil.move(
+                    path.join(self.gameDirectory, "UnityPlayer.bak.dll"),
+                    path.join(self.gameDirectory, "UnityPlayer.dll"),
+                )
+            except Exception as e:
+                print(self.unityplayermovemsg)
+        else:
+            print(self.unityplayermovemsg)
+
         print("Done!\n")
         return
 
