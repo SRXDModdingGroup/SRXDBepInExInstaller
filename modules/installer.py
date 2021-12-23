@@ -88,12 +88,15 @@ class Installer:
             self.deleteFiles(willDelList)
 
         hashdict = self.getUnityPlayerWrapperHashes()
-        if hashdict["norm_bak"] != hashdict["norm"] and hashdict["mono"] == hashdict["norm"]:
-            shutil.move(self.unityplayerwrapper["norm_bak"], self.unityplayerwrapper["norm"])
-        elif hashdict["norm_bak"].__len__() == 0 and hashdict["mono"] != hashdict["norm"]:
-            ""
-        elif hashdict["norm_bak"] != hashdict["norm"] and hashdict["mono"] != hashdict["norm"]:
-            os.remove(self.unityplayerwrapper["norm_bak"])
+        try:
+            if hashdict["norm_bak"] != hashdict["norm"] and hashdict["mono"] == hashdict["norm"]:
+                shutil.move(self.unityplayerwrapper["norm_bak"], self.unityplayerwrapper["norm"])
+            elif hashdict["norm_bak"].__len__() == 0 and hashdict["mono"] != hashdict["norm"]:
+                ""
+            elif hashdict["norm_bak"] != hashdict["norm"] and hashdict["mono"] != hashdict["norm"]:
+                os.remove(self.unityplayerwrapper["norm_bak"])
+        except:
+            print(self.unityplayermovemsg)
 
         print("Done!\n")
         return
