@@ -11,7 +11,7 @@ from modules.unitylibs import UnityLibsUtils
 from modules.downloadutils import DownloadUtils
 from modules.config import ConfigUtils
 from modules.directoryfiller import DirectoryFiller
-
+import hashlib
 
 # Instantiate with game directory.
 class Installer:
@@ -19,10 +19,28 @@ class Installer:
         self.unitylibsutils = UnityLibsUtils()
         self.utils = DownloadUtils()
         self.gameDirectory = gameDirectory
+        self.unityplayerwrapper = {
+            "norm": path.join(self.gameDirectory, "UnityPlayer.dll"),
+            "mono": path.join(self.gameDirectory, "UnityPlayer_Mono.dll"),
+            "norm_bak": path.join(self.gameDirectory, "UnityPlayer.bak.dll")
+        }
         self.unityplayermovemsg = "UnityPlayer.dll could not be moved! It is advisable to delete any files starting with \"UnityPlayer\" in your directory, and click on Steam > SRXD Properties > Local Files > Verify Integrity."
         return
 
-    def install(self, bepinUrl:str, installUnityLibs:bool): 
+    def getUnityPlayerWrapperHashes(self):
+        dict = self.unityplayerwrapper.copy()
+        for key in dict:
+            if path.exists(dict[key]):
+                hash_md5 = hashlib.md5()
+                with open(dict[key], "rb") as f:
+                    for chunk in iter(lambda: f.read(4096), b""):
+                        hash_md5.update(chunk)
+                dict[key] = hash_md5.hexdigest()
+            else:
+                dict[key] = ""
+        return dict
+
+    def install(self, bepinUrl:str, installUnityLibs:bool):
         # Downloads BepInEx and extracts to Steam Library
         print("\nDownloading and Installing BepInEx")
         self.utils.downloadFileAndUnzip(bepinUrl, self.gameDirectory)
@@ -43,20 +61,12 @@ class Installer:
         except Exception as e:
             print(f'Post-Installation Scripts have Failed to Run. "Logging.Console" will not Enabled by Default. Exception: {e}')
 
-        if (path.exists(path.join(self.gameDirectory, "UnityPlayer_Mono.dll")) and not path.islink(path.join(self.gameDirectory, "UnityPlayer.dll"))):
-            try:
-                shutil.move(
-                    path.join(self.gameDirectory, "UnityPlayer.dll"),
-                    path.join(self.gameDirectory, "UnityPlayer.bak.dll")
-                )
-                os.symlink(
-                    path.join(self.gameDirectory, "UnityPlayer_Mono.dll"),
-                    path.join(self.gameDirectory, "UnityPlayer.dll")
-                )
-            except Exception as e:
-                print(self.unityplayermovemsg)
+        hashdict = self.getUnityPlayerWrapperHashes()
+        if hashdict["mono"] == hashdict["norm"]:
+            ""
         else:
-            print(self.unityplayermovemsg)
+            shutil.move(self.unityplayerwrapper["norm"], self.unityplayerwrapper["norm_bak"])
+            shutil.copy(self.unityplayerwrapper["mono"], self.unityplayerwrapper["norm"])
 
         print('Done!\nYou Can Now Put Your Mods in "{}"'.format(os.path.join(bepinPath, "plugins")))
 
@@ -77,17 +87,13 @@ class Installer:
                     willDelList.append(os.path.join("BepInEx", fileBName))
             self.deleteFiles(willDelList)
 
-        if (path.islink(path.join(self.gameDirectory, "UnityPlayer.dll"))):
-            try:
-                os.remove(path.join(self.gameDirectory, "UnityPlayer.dll"))
-                shutil.move(
-                    path.join(self.gameDirectory, "UnityPlayer.bak.dll"),
-                    path.join(self.gameDirectory, "UnityPlayer.dll"),
-                )
-            except Exception as e:
-                print(self.unityplayermovemsg)
-        else:
-            print(self.unityplayermovemsg)
+        hashdict = self.getUnityPlayerWrapperHashes()
+        if hashdict["norm_bak"] != hashdict["norm"] and hashdict["mono"] == hashdict["norm"]:
+            shutil.move(self.unityplayerwrapper["norm_bak"], self.unityplayerwrapper["norm"])
+        elif hashdict["norm_bak"].__len__() == 0 and hashdict["mono"] != hashdict["norm"]:
+            ""
+        elif hashdict["norm_bak"] != hashdict["norm"] and hashdict["mono"] != hashdict["norm"]:
+            os.remove(self.unityplayerwrapper["norm_bak"])
 
         print("Done!\n")
         return
