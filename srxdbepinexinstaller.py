@@ -1,6 +1,6 @@
 from modules.args import ArgsUtils
 from modules.steamutils import SteamUtils
-from modules.bepinex import BepInExUtils
+from modules.github import GitHubUtils
 # from modules.gui import GuiUtils
 from modules.installer import Installer
 from modules.args import ArgsUtils
@@ -33,7 +33,7 @@ def main():
     else:
         # Init BepInEx Webpage
         print("\nGetting Info from BepInEx Bleeding Edge Website...")
-        bepinutils = BepInExUtils()
+        bepinutils = GitHubUtils()
 
         # Get Download URL
         url = bepinutils.downloadURLs[0]
